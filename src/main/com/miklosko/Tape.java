@@ -13,4 +13,12 @@ public class Tape {
     public Movie movie(){
         return movie;
     }
+
+    public double charge(int daysRented) {
+        return movie.charge(daysRented);
+    }
+
+    public String getTitle() {
+        return movie.getTitle();
+    }
 }

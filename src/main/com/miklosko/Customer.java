@@ -18,9 +18,7 @@ class Customer extends DomainObject
             while (rentals.hasMoreElements()) {
 
                 Rental rental = (Rental) rentals.nextElement();
-
-                //show figures for this rental
-                result += "\t" + rental.tape().movie().name()+ "\t" + String.valueOf(rental.charge()) + "\n";
+                result += "\t" + rental.getTitle()+ "\t" + String.valueOf(rental.charge()) + "\n";
             }
         } catch (Throwable t) {
             System.out.println("Unexpected exception " + t);
@@ -41,10 +39,7 @@ class Customer extends DomainObject
     }
 
     private int frequentRenterPointsFor(Rental rental){
-        if ((rental.tape().movie().priceCode() == Movie.NEW_RELEASE) && rental.daysRented() > 1)
-            return 2;
-        else
-            return 1;
+        return rental.frequentRenterPoints();
     }
 
     private double totalAmount(){
