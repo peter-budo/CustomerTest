@@ -12,17 +12,12 @@ class Customer extends DomainObject
         _name = name;
     }
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
         Enumeration rentals = _rentals.elements();
         String result = "Rental Record for " + name() + "\n";
         try {
             while (rentals.hasMoreElements()) {
 
                 Rental rental = (Rental) rentals.nextElement();
-                totalAmount += rental.charge();
-
-                frequentRenterPoints += frequentRenterPointsFor(rental);
 
                 //show figures for this rental
                 result += "\t" + rental.tape().movie().name()+ "\t" + String.valueOf(rental.charge()) + "\n";
@@ -31,8 +26,8 @@ class Customer extends DomainObject
             System.out.println("Unexpected exception " + t);
         }
         //add footer lines
-        result +=  "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
+        result +=  "Amount owed is " + String.valueOf(totalAmount()) + "\n";
+        result += "You earned " + String.valueOf(frequentRenterPoints()) + " frequent renter points";
         return result;
 
     }
@@ -50,6 +45,26 @@ class Customer extends DomainObject
             return 2;
         else
             return 1;
+    }
+
+    private double totalAmount(){
+        double totalAmount = 0;
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()){
+            Rental rental = (Rental) rentals.nextElement();
+            totalAmount  += rental.charge();
+        }
+        return totalAmount;
+    }
+
+    private int frequentRenterPoints(){
+        int points = 0;
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()){
+            Rental rental = (Rental) rentals.nextElement();
+            points  += frequentRenterPointsFor(rental);
+        }
+        return points;
     }
 }
 	
