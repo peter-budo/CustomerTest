@@ -22,10 +22,7 @@ class Customer extends DomainObject
                 Rental rental = (Rental) rentals.nextElement();
                 totalAmount += rental.charge();
 
-                // add frequent renter points
-                frequentRenterPoints ++;
-                // add bonus for a two day new release rental
-                if ((rental.tape().movie().priceCode() == Movie.NEW_RELEASE) && rental.daysRented() > 1) frequentRenterPoints ++;
+                frequentRenterPoints += frequentRenterPointsFor(rental);
 
                 //show figures for this rental
                 result += "\t" + rental.tape().movie().name()+ "\t" + String.valueOf(rental.charge()) + "\n";
@@ -46,6 +43,13 @@ class Customer extends DomainObject
 
     public void addRental(Rental rental){
         _rentals.add(rental);
+    }
+
+    private int frequentRenterPointsFor(Rental rental){
+        if ((rental.tape().movie().priceCode() == Movie.NEW_RELEASE) && rental.daysRented() > 1)
+            return 2;
+        else
+            return 1;
     }
 }
 	
